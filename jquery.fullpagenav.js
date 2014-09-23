@@ -44,12 +44,9 @@
 
 
       el.find(settings.selector).each(function() {
-        if($(this).prev(".fpn_li").length > 0){
-          if($(this).prev(".fpn_li").hasClass("active")){
-            var w = settings.hoverSize
-          }else{
-            var w = smallWidth
-          }
+        var $column = $(this).prev(".fpn_li");
+        if($column.length > 0){
+          var w = $column.hasClass("active") ? settings.hoverSize : smallWidth;
           var left = totalWidth + parseFloat(w);
 
           $(this).finish().animate({
