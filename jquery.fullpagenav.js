@@ -115,7 +115,7 @@
                 width: "100%", top: 0, left: 0
               }, settings.animationDuration, function() {
                 e.preventDefault();
-                if(typeof settings.afterClicked === 'function'){
+                if(typeof settings.afterClicked === "function"){
                   return settings.afterClicked(li.data("link"));
                 }
                 window.location.href = li.data("link");
