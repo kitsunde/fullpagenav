@@ -37,7 +37,6 @@
     var $slides = el.find(settings.selector);
     var containerWidth = $(this).parent().width();
     var expandedWidth = $slides.hasClass("fpn_clicked") ? 100 : settings.hoverSize;
-    console.log(expandedWidth, $slides.hasClass("fpn_clicked"));
 
     if(expandedWidth === 100){
       unexpandedWidth = 0;
