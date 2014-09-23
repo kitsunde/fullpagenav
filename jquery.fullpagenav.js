@@ -111,7 +111,7 @@
               .finish()
               .animate({
                 width: "100%", top: 0, left: 0
-              }, settings.animationDuration, function() {
+              }, settings.animateDuration, function() {
                 e.preventDefault();
                 if(typeof settings.afterClicked === "function"){
                   return settings.afterClicked(li.data("link"));
@@ -121,7 +121,7 @@
           }else{
             li.find(".fpn_wrap").removeClass("fpn_clicked").finish().animate({
               width: "0%", top: 0, left: 0, height: "0%"
-            }, settings.animationDuration, function() {
+            }, settings.animateDuration, function() {
               $(this).attr("style", "").find("> img").attr("style", "");
             });
           }
