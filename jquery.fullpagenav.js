@@ -17,7 +17,7 @@
   var defaults = {
     columns: 5,
     selector: "> li",
-    hover_size: "30%",
+    hoverSize: "30%",
     animateDuration: 500,
     animateFrom: "left",
     clickable: true,
@@ -27,30 +27,30 @@
   $.fn.recalculate = function(settings, width) {
     var el = $(this),
       active = false,
-      total_width = 0;
+      totalWidth = 0;
 
     if(el.find(".fpn_li.active").length > 0){
 
       el.find(".fpn_li.active").css({
-        width: settings.hover_size
+        width: settings.hoverSize
       });
 
-      var small_width = (100 - parseFloat(settings.hover_size)) /
+      var smallWidth = (100 - parseFloat(settings.hoverSize)) /
         (settings.columns - 1);
 
       el.find(".fpn_li:not(.active)").css({
-        width: small_width + "%"
+        width: smallWidth + "%"
       });
 
 
       el.find(settings.selector).each(function() {
         if($(this).prev(".fpn_li").length > 0){
           if($(this).prev(".fpn_li").hasClass("active")){
-            var w = settings.hover_size
+            var w = settings.hoverSize
           }else{
-            var w = small_width
+            var w = smallWidth
           }
-          var left = total_width + parseFloat(w);
+          var left = totalWidth + parseFloat(w);
 
           $(this).finish().animate({
             left: left + "%"
@@ -60,7 +60,7 @@
             });
           });
 
-          total_width = total_width + parseFloat(w)
+          totalWidth = totalWidth + parseFloat(w)
         }
       });
     }else{

@@ -34,7 +34,7 @@ And you can add any kind of HTML tags that you wish for it to display in each co
 $(".nav").fullpagenav({
   columns: 5, // Number of columns you wish the script to divide your navigation into. This should be relative to the number of li tags you have. The column should be 3 for the example above. The default value is 5.
   selector: "> li", // In case you don't want to use ul and li, you can change the selector here. This option accepts CSS selector. The Default value is "> li"
-  hover_size: "30%", // This option let you determine how big to expand the navigation when the cursor is hovering the area. The option accepts a percentage value. The default value is "30%"
+  hoverSize: "30%", // This option let you determine how big to expand the navigation when the cursor is hovering the area. The option accepts a percentage value. The default value is "30%"
   animateDuration: 500, // You can define the animation duration here which will be used globally throughout the plugin. This option accepts milliseconds without the unit. The default value is 500.
   animateFrom: "left", // Determine which direction the hovered navigation should expand to. Available options are "left", "right", and "auto". Auto will determine the direction from where you cursor enters the navigation area. The default value is "left".
   clickable: true, // Toggle this to true if you want the area to be clickable. Make sure to add an extra data-link attribute to the li tag containing the URL you wish the navigation to take to user to once clicked. The default value is true.
