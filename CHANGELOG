@@ -1,0 +1,8 @@
+1.1
+  - Change click behavior to expand the slide.
+  - Fixed mouse hover to transition from one state to the next fluidly.
+  - Added fullpagenav("page", n) to set the expanded page.
+  - Added fullpagenav("prev") to go backwards through the pages.
+  - Added fullpagenav("next") to forward through the pages.
+  - Removed the data-link attribute.
+  
