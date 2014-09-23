@@ -19,7 +19,7 @@
     selector: "> li",
     hoverSize: "30%",
     animateDuration: 500,
-    easing: 'linear',
+    easing: "linear",
     animateFrom: "left",
     clickable: true,
     afterClicked: null
