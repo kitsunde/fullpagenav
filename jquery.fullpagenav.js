@@ -25,6 +25,9 @@
     afterClicked: null
   };
 
+  var dimensions;
+  var $slides;
+
   $.fn.recalculate = function(settings, width) {
     var el = $(this), totalWidth = 0;
 
@@ -75,19 +78,24 @@
     var settings = $.extend({}, defaults, options),
       el = $(this),
       width = 100 / settings.columns;
+    $slides = $(settings.selector, this);
 
-    el.addClass("fullpagenav").find(settings.selector).addClass("fpn_li");
+    dimensions = $.map($slides, function(item, index) {
+      var width = 100 / $slides.length;
+      return {left: width * index, width: width};
+    });
+
+    el.addClass("fullpagenav");
+    $slides.addClass("fpn_li");
     el.parent().addClass("fpn_body");
 
-
-    el.find(settings.selector).each(function(index) {
+    $slides.each(function(index) {
       var li = $(this);
-
-
       li.css({
-        width: width + "%",
-        left: (width * index) + "%"
+        width: dimensions[index].width + "%",
+        left: dimensions[index].left + "%"
       });
+
       li.wrapInner("<div class='fpn_wrap'></div>");
 
       if(settings.clickable === true && li.data("link")){
@@ -107,7 +115,9 @@
               .css({position: "fixed", "z-index": 99})
               .finish()
               .animate({
-                width: "100%", top: 0, left: 0
+                width: "100%",
+                top: 0,
+                left: 0
               }, settings.animateDuration, settings.easing, function() {
                 e.preventDefault();
                 if(typeof settings.afterClicked === "function"){
