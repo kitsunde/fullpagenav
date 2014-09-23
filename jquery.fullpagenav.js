@@ -57,7 +57,7 @@
             });
           });
 
-          totalWidth = totalWidth + parseFloat(w)
+          totalWidth = totalWidth + parseFloat(w);
         }
       });
     }else{
@@ -125,7 +125,7 @@
               width: "0%", top: 0, left: 0, height: "0%"
             }, settings.animationDuration, function() {
               $(this).attr("style", "").find("> img").attr("style", "");
-            })
+            });
           }
         });
       }
@@ -163,7 +163,6 @@
         }
       });
     });
-
-  }
+  };
 })(window.jQuery);
 
