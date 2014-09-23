@@ -95,7 +95,7 @@
       });
       li.wrapInner("<div class='fpn_wrap'></div>");
 
-      if(settings.clickable == true && li.data("link")){
+      if(settings.clickable === true && li.data("link")){
         li.css({cursor: "pointer"}).click(function(e) {
           if(!li.find(".fpn_wrap").hasClass("fpn_clicked")){
             li.find(".fpn_wrap > img").css({
@@ -115,7 +115,7 @@
                 width: "100%", top: 0, left: 0
               }, settings.animationDuration, function() {
                 e.preventDefault();
-                if(typeof settings.afterClicked == 'function'){
+                if(typeof settings.afterClicked === 'function'){
                   return settings.afterClicked(li.data("link"));
                 }
                 window.location.href = li.data("link");
@@ -134,9 +134,9 @@
         if(!li.find(".fpn_wrap").hasClass("fpn_clicked")){
           $(this).finish().addClass("active");
           el.recalculate(settings, width);
-          if(settings.animateFrom == "auto"){
+          if(settings.animateFrom === "auto"){
 
-            if(determineDirection(li, e) == 1){
+            if(determineDirection(li, e) === 1){
               $(this).find(".fpn_wrap").finish()
                 .css({ float: "left"})
                 .animate({width: el.find(".fpn_li.active").width()},
