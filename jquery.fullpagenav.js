@@ -50,11 +50,7 @@
 
           $(this).finish().animate({
             left: left + "%"
-          }, settings.animateDuration, settings.easing, function() {
-            $(this).css({
-              left: left + "%"
-            });
-          });
+          }, settings.animateDuration, settings.easing);
 
           totalWidth = totalWidth + parseFloat(w);
         }
