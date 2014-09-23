@@ -11,7 +11,8 @@
  *
  * ========================================================== */
 
-!function($) {
+(function($) {
+  "use strict";
 
   var defaults = {
     columns: 5,
@@ -167,5 +168,5 @@
     });
 
   }
-}(window.jQuery);
+})(window.jQuery);
 
