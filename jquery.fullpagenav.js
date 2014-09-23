@@ -19,6 +19,7 @@
     selector: "> li",
     hoverSize: "30%",
     animateDuration: 500,
+    easing: 'linear',
     animateFrom: "left",
     clickable: true,
     afterClicked: null
@@ -49,7 +50,7 @@
 
           $(this).finish().animate({
             left: left + "%"
-          }, settings.animateDuration, function() {
+          }, settings.animateDuration, settings.easing, function() {
             $(this).css({
               left: left + "%"
             });
@@ -63,7 +64,7 @@
         $(this).finish().animate({
           width: width + "%",
           left: (width * index) + "%"
-        }, settings.animateDuration);
+        }, settings.animateDuration, settings.easing);
       });
     }
   };
@@ -103,7 +104,7 @@
               maxHeight: "inherit"
             }).animate({
               width: "100%"
-            });
+            }, settings.animateDuration, settings.easing);
 
 
             li.find(".fpn_wrap").addClass("fpn_clicked")
@@ -111,7 +112,7 @@
               .finish()
               .animate({
                 width: "100%", top: 0, left: 0
-              }, settings.animateDuration, function() {
+              }, settings.animateDuration, settings.easing, function() {
                 e.preventDefault();
                 if(typeof settings.afterClicked === "function"){
                   return settings.afterClicked(li.data("link"));
@@ -121,7 +122,7 @@
           }else{
             li.find(".fpn_wrap").removeClass("fpn_clicked").finish().animate({
               width: "0%", top: 0, left: 0, height: "0%"
-            }, settings.animateDuration, function() {
+            }, settings.animateDuration, settings.easing, function() {
               $(this).attr("style", "").find("> img").attr("style", "");
             });
           }
@@ -138,18 +139,18 @@
               $(this).find(".fpn_wrap").finish()
                 .css({ float: "left"})
                 .animate({width: el.find(".fpn_li.active").width()},
-                settings.animateDuration);
+                settings.animateDuration, settings.easing);
             }else{
               $(this).find(".fpn_wrap").finish()
                 .css({ float: "right"})
                 .animate({width: el.find(".fpn_li.active").width()},
-                settings.animateDuration);
+                settings.animateDuration, settings.easing);
             }
           }else{
             $(this).find(".fpn_wrap").finish()
               .css({ float: settings.animateFrom})
               .animate({width: el.find(".fpn_li.active").width()},
-              settings.animateDuration);
+              settings.animateDuration, settings.easing);
           }
         }
 
