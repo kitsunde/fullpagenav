@@ -25,9 +25,7 @@
   };
 
   $.fn.recalculate = function(settings, width) {
-    var el = $(this),
-      active = false,
-      totalWidth = 0;
+    var el = $(this), totalWidth = 0;
 
     if(el.find(".fpn_li.active").length > 0){
 
