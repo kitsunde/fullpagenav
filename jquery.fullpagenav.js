@@ -86,67 +86,38 @@
 
     $slides
       .wrapInner("<div class='fpn_wrap'></div>")
-      .each(function(index) {
-      var li = $(this);
-
-
-      if(settings.clickable === true && li.data("link")){
-        li.css({cursor: "pointer"}).click(function(e) {
-          if(!li.find(".fpn_wrap").hasClass("fpn_clicked")){
-            li.find(".fpn_wrap > img").css({
-              margin: 0,
-              padding: 0,
-              left: 0,
-              maxHeight: "inherit"
-            }).animate({
-              width: "100%"
-            }, settings.animateDuration, settings.easing);
-
-
-            li.find(".fpn_wrap").addClass("fpn_clicked")
-              .css({position: "fixed", "z-index": 99})
-              .finish()
-              .animate({
-                width: "100%",
-                top: 0,
-                left: 0
-              }, settings.animateDuration, settings.easing, function() {
-                e.preventDefault();
-                if(typeof settings.afterClicked === "function"){
-                  return settings.afterClicked(li.data("link"));
-                }
-                window.location.href = li.data("link");
-              });
-          }else{
-            li.find(".fpn_wrap").removeClass("fpn_clicked").finish().animate({
-              width: "0%", top: 0, left: 0, height: "0%"
-            }, settings.animateDuration, settings.easing, function() {
-              $(this).attr("style", "").find("> img").attr("style", "");
-            });
-          }
-        });
-      }
-
-      li.mouseenter(function(e) {
-        if(!li.find(".fpn_wrap").hasClass("fpn_clicked")){
-          $(this).addClass("active");
-          var floatDirection;
-
-          el.recalculate(settings, width);
-          if(settings.animateFrom === "auto"){
-            floatDirection = determineDirection(li, e) === 1 ? "left" : "right";
-          }else{
-            floatDirection = settings.animateFrom;
-          }
-          $(this).find(".fpn_wrap").css({"float": floatDirection});
+      .click(function() {
+        if(!$(this).hasClass("fpn_clicked")){
+          $(this).addClass("fpn_clicked");
+          settings.hoverSize = 100;
+          el.recalculate(settings);
+          return false;
+        }else{
+          $(this).removeClass("fpn_clicked");
+          settings.hoverSize = 30;
+          el.recalculate(settings);
         }
+      }).mouseenter(function(e) {
+        if($(this).hasClass("fpn_clicked")){
+          return false;
+        }
+        $(this).addClass("active");
+        var floatDirection;
+
+        el.recalculate(settings, width);
+        if(settings.animateFrom === "auto"){
+          floatDirection = determineDirection(li, e) === 1 ? "left" : "right";
+        }else{
+          floatDirection = settings.animateFrom;
+        }
+        $(this).find(".fpn_wrap").css({"float": floatDirection});
       }).mouseleave(function() {
-        if(!li.find(".fpn_wrap").hasClass("fpn_clicked")){
-          $(this).removeClass("active");
-          el.recalculate(settings, width);
+        if($(this).hasClass("fpn_clicked")){
+          return false;
         }
+        $(this).removeClass("active");
+        el.recalculate(settings, width);
       });
-    });
   };
 })(window.jQuery);
 
