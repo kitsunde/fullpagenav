@@ -17,7 +17,7 @@
   var defaults = {
     columns: 5,
     selector: "> li",
-    hoverSize: "30%",
+    hoverSize: 30,
     animateDuration: 500,
     easing: "linear",
     animateFrom: "left",
@@ -28,44 +28,36 @@
   var dimensions;
   var $slides;
 
-  $.fn.recalculate = function(settings, width) {
-    var el = $(this), totalWidth = 0;
+  $.fn.recalculate = function(settings) {
+    var el = $(this);
+    var totalWidth = 0;
+    var unexpandedWidth;
 
-    if(el.find(".fpn_li.active").length > 0){
-
-      el.find(".fpn_li.active").css({
-        width: settings.hoverSize
-      });
-
-      var smallWidth = (100 - parseFloat(settings.hoverSize)) /
-        (settings.columns - 1);
-
-      el.find(".fpn_li:not(.active)").css({
-        width: smallWidth + "%"
-      });
-
-
-      el.find(settings.selector).each(function() {
-        var $column = $(this).prev(".fpn_li");
-        if($column.length > 0){
-          var w = $column.hasClass("active") ? settings.hoverSize : smallWidth;
-          var left = totalWidth + parseFloat(w);
-
-          $(this).finish().animate({
-            left: left + "%"
-          }, settings.animateDuration, settings.easing);
-
-          totalWidth = totalWidth + parseFloat(w);
-        }
-      });
+    var containerWidth = $(this).parent().width();
+    if($slides.hasClass("active")){
+      unexpandedWidth = (100 - settings.hoverSize) / (dimensions.length - 1);
     }else{
-      el.find(settings.selector).each(function(index) {
-        $(this).finish().animate({
-          width: width + "%",
-          left: (width * index) + "%"
-        }, settings.animateDuration, settings.easing);
-      });
+      unexpandedWidth = 100 / dimensions.length;
     }
+
+    $slides.each(function(item, index) {
+      var targetWidth = 0;
+      if($(this).hasClass("active")){
+        targetWidth = settings.hoverSize;
+      }else{
+        targetWidth = unexpandedWidth;
+      }
+      $(this).stop().animate({
+        left: totalWidth + '%',
+        width: targetWidth + "%"
+      }, settings.animateDuration, settings.easing)
+        .find(".fn_wrap")
+        .css({
+          width: parseInt(containerWidth * (100 / targetWidth))
+        });
+
+      totalWidth += targetWidth;
+    });
   };
 
   function determineDirection($el, pos) {
@@ -89,14 +81,14 @@
     $slides.addClass("fpn_li");
     el.parent().addClass("fpn_body");
 
-    $slides.each(function(index) {
-      var li = $(this);
-      li.css({
-        width: dimensions[index].width + "%",
-        left: dimensions[index].left + "%"
-      });
+    el.recalculate(settings, width);
+    $slides.finish();
 
-      li.wrapInner("<div class='fpn_wrap'></div>");
+    $slides
+      .wrapInner("<div class='fpn_wrap'></div>")
+      .each(function(index) {
+      var li = $(this);
+
 
       if(settings.clickable === true && li.data("link")){
         li.css({cursor: "pointer"}).click(function(e) {
@@ -137,7 +129,7 @@
 
       li.mouseenter(function(e) {
         if(!li.find(".fpn_wrap").hasClass("fpn_clicked")){
-          $(this).finish().addClass("active");
+          $(this).addClass("active");
           var floatDirection;
 
           el.recalculate(settings, width);
@@ -146,19 +138,12 @@
           }else{
             floatDirection = settings.animateFrom;
           }
-          $(this).find(".fpn_wrap")
-            .finish()
-            .css({"float": floatDirection})
-            .animate({width: el.find(".fpn_li.active").width()},
-            settings.animateDuration,
-            settings.easing);
+          $(this).find(".fpn_wrap").css({"float": floatDirection});
         }
-
       }).mouseleave(function() {
         if(!li.find(".fpn_wrap").hasClass("fpn_clicked")){
           $(this).removeClass("active");
           el.recalculate(settings, width);
-          el.find(".fpn_wrap").finish().css({width: "100%"});
         }
       });
     });
