@@ -132,26 +132,20 @@
       li.mouseenter(function(e) {
         if(!li.find(".fpn_wrap").hasClass("fpn_clicked")){
           $(this).finish().addClass("active");
+          var floatDirection;
+
           el.recalculate(settings, width);
           if(settings.animateFrom === "auto"){
-
-            if(determineDirection(li, e) === 1){
-              $(this).find(".fpn_wrap").finish()
-                .css({ float: "left"})
-                .animate({width: el.find(".fpn_li.active").width()},
-                settings.animateDuration, settings.easing);
-            }else{
-              $(this).find(".fpn_wrap").finish()
-                .css({ float: "right"})
-                .animate({width: el.find(".fpn_li.active").width()},
-                settings.animateDuration, settings.easing);
-            }
+            floatDirection = determineDirection(li, e) === 1 ? "left" : "right";
           }else{
-            $(this).find(".fpn_wrap").finish()
-              .css({ float: settings.animateFrom})
-              .animate({width: el.find(".fpn_li.active").width()},
-              settings.animateDuration, settings.easing);
+            floatDirection = settings.animateFrom;
           }
+          $(this).find(".fpn_wrap")
+            .finish()
+            .css({"float": floatDirection})
+            .animate({width: el.find(".fpn_li.active").width()},
+            settings.animateDuration,
+            settings.easing);
         }
 
       }).mouseleave(function() {
