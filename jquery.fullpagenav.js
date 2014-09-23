@@ -26,8 +26,6 @@
   $.fn.recalculate = function(settings, width) {
     var el = $(this),
       active = false,
-      total = el.find(settings.selector).length,
-      last_pos = 0,
       total_width = 0;
 
     if(el.find(".fpn_li.active").length > 0){
@@ -44,7 +42,7 @@
       });
 
 
-      el.find(settings.selector).each(function(index, value) {
+      el.find(settings.selector).each(function() {
         if($(this).prev(".fpn_li").length > 0){
           if($(this).prev(".fpn_li").hasClass("active")){
             var w = settings.hover_size
@@ -65,7 +63,7 @@
         }
       });
     }else{
-      el.find(settings.selector).each(function(index, value) {
+      el.find(settings.selector).each(function(index) {
         $(this).finish().animate({
           width: width + "%",
           left: (width * index) + "%"
@@ -89,7 +87,7 @@
     el.parent().addClass("fpn_body");
 
 
-    el.find(settings.selector).each(function(index, value) {
+    el.find(settings.selector).each(function(index) {
       var li = $(this);
 
 
