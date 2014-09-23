@@ -35,9 +35,13 @@
     var totalWidth = 0;
     var unexpandedWidth;
     var $slides = el.find(settings.selector);
-
     var containerWidth = $(this).parent().width();
-    if($slides.hasClass("active")){
+    var expandedWidth = $slides.hasClass("fpn_clicked") ? 100 : settings.hoverSize;
+    console.log(expandedWidth, $slides.hasClass("fpn_clicked"));
+
+    if(expandedWidth === 100){
+      unexpandedWidth = 0;
+    }else if($slides.hasClass("active")){
       unexpandedWidth = (100 - settings.hoverSize) / (dimensions.length - 1);
     }else{
       unexpandedWidth = 100 / dimensions.length;
@@ -46,7 +50,7 @@
     $slides.each(function(item, index) {
       var targetWidth = 0;
       if($(this).hasClass("active")){
-        targetWidth = settings.hoverSize;
+        targetWidth = expandedWidth
       }else{
         targetWidth = unexpandedWidth;
       }
@@ -81,6 +85,25 @@
         .filter(".active")
         .removeClass("active fpn_clicked")
         .next()
+        .addClass("active fpn_clicked");
+      el.recalculate(settings);
+      return el;
+    }
+    if(options === "prev"){
+      el.find(settings.selector)
+        .filter(".active")
+        .removeClass("active fpn_clicked")
+        .prev()
+        .addClass("active fpn_clicked");
+      el.recalculate(settings);
+      return el;
+    }
+    if(options === "page"){
+      el.find(settings.selector)
+        .filter(".active")
+        .removeClass("active fpn_clicked")
+        .end()
+        .eq(page - 1)
         .addClass("active fpn_clicked");
       el.recalculate(settings);
       return el;
