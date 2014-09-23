@@ -14,6 +14,8 @@
 (function($) {
   "use strict";
 
+  var instances = {};
+
   var defaults = {
     columns: 5,
     selector: "> li",
@@ -32,6 +34,7 @@
     var el = $(this);
     var totalWidth = 0;
     var unexpandedWidth;
+    var $slides = el.find(settings.selector);
 
     var containerWidth = $(this).parent().width();
     if($slides.hasClass("active")){
@@ -66,11 +69,26 @@
     return (pos.pageX > middle ? 0 : 1);
   }
 
-  $.fn.fullpagenav = function(options) {
-    var settings = $.extend({}, defaults, options),
-      el = $(this),
-      width = 100 / settings.columns;
-    $slides = $(settings.selector, this);
+  $.fn.fullpagenav = function(options, page) {
+    var el = $(this);
+    if(instances[el]){
+      settings = instances[el].settings;
+    }else{
+      instances[el] = {}
+    }
+    if(options === "next"){
+      el.find(settings.selector)
+        .filter(".active")
+        .removeClass("active fpn_clicked")
+        .next()
+        .addClass("active fpn_clicked");
+      el.recalculate(settings);
+      return el;
+    }
+
+    var settings = $.extend({}, defaults, options);
+    instances[el].settings = settings;
+    var $slides = $(settings.selector, this);
 
     dimensions = $.map($slides, function(item, index) {
       var width = 100 / $slides.length;
@@ -81,7 +99,7 @@
     $slides.addClass("fpn_li");
     el.parent().addClass("fpn_body");
 
-    el.recalculate(settings, width);
+    el.recalculate(settings);
     $slides.finish();
 
     $slides
@@ -104,7 +122,7 @@
         $(this).addClass("active");
         var floatDirection;
 
-        el.recalculate(settings, width);
+        el.recalculate(settings);
         if(settings.animateFrom === "auto"){
           floatDirection = determineDirection(li, e) === 1 ? "left" : "right";
         }else{
@@ -116,7 +134,7 @@
           return false;
         }
         $(this).removeClass("active");
-        el.recalculate(settings, width);
+        el.recalculate(settings);
       });
   };
 })(window.jQuery);
