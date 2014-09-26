@@ -164,7 +164,7 @@
 
         el.recalculate(settings);
         if(settings.animateFrom === "auto"){
-          floatDirection = determineDirection(li, e) === 1 ? "left" : "right";
+          floatDirection = determineDirection($(this), e) === 1 ? "left" : "right";
         }else{
           floatDirection = settings.animateFrom;
         }
