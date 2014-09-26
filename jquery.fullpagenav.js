@@ -28,7 +28,6 @@
   };
 
   var dimensions;
-  var $slides;
 
   $.fn.recalculate = function(settings) {
     var el = $(this);
