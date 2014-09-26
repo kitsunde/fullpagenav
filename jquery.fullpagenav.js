@@ -37,6 +37,17 @@
     var containerWidth = $(this).parent().width();
     var expandedWidth = $slides.hasClass("fpn_clicked") ? 100 : settings.hoverSize;
 
+    if(expandedWidth !== 100){
+      if(el.hasClass("expanded") || el.hasClass("expanding")){
+        el.trigger($.Event("shrinking.fullpagenav", {relatedTarget: this}));
+      }
+      el.removeClass("expanded expanding");
+    }
+
+    if(expandedWidth === 100){
+      el.addClass("expanding");
+    }
+
     if(expandedWidth === 100){
       unexpandedWidth = 0;
     }else if($slides.hasClass("active")){
@@ -45,17 +56,23 @@
       unexpandedWidth = 100 / dimensions.length;
     }
 
-    $slides.each(function(item, index) {
+    $slides.each(function() {
       var targetWidth = 0;
       if($(this).hasClass("active")){
-        targetWidth = expandedWidth
+        targetWidth = expandedWidth;
+        el.trigger($.Event("expanding.fullpagenav", {relatedTarget: this}));
       }else{
         targetWidth = unexpandedWidth;
       }
       $(this).stop().animate({
         left: totalWidth + '%',
         width: targetWidth + "%"
-      }, settings.animateDuration, settings.easing)
+      }, settings.animateDuration, settings.easing, function(){
+        if(targetWidth === expandedWidth){
+          el.trigger($.Event("expanded.fullpagenav", {relatedTarget: this}));
+          el.addClass("expanded");
+        }
+      })
         .find(".fn_wrap")
         .css({
           width: parseInt(containerWidth * (100 / targetWidth))

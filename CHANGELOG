@@ -5,4 +5,6 @@
   - Added fullpagenav("prev") to go backwards through the pages.
   - Added fullpagenav("next") to forward through the pages.
   - Removed the data-link attribute.
-  
+  - Added events expanding.fullpagenav, shrinking.fullpagenav,
+    expanded.fullpagenav
+  - Added classes for state expanded, expanding.
