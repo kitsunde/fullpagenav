@@ -60,7 +60,9 @@
       var targetWidth = 0;
       if($(this).hasClass("active")){
         targetWidth = expandedWidth;
-        el.trigger($.Event("expanding.fullpagenav", {relatedTarget: this}));
+        if(targetWidth === 100){
+          el.trigger($.Event("expanding.fullpagenav", {relatedTarget: this}));
+        }
       }else{
         targetWidth = unexpandedWidth;
       }
@@ -68,7 +70,7 @@
         left: totalWidth + '%',
         width: targetWidth + "%"
       }, settings.animateDuration, settings.easing, function(){
-        if(targetWidth === expandedWidth){
+        if(targetWidth === 100){
           el.trigger($.Event("expanded.fullpagenav", {relatedTarget: this}));
           el.addClass("expanded");
         }
