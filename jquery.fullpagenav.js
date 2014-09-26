@@ -176,6 +176,7 @@
         $(this).removeClass("active");
         el.recalculate(settings);
       });
+    return el;
   };
 })(window.jQuery);
 
