@@ -10,3 +10,4 @@ v2 in Development
   - Added classes for state expanded, expanding.
   - Cleaned up all the code and organized it similarly to bootstrap plugins.
   - Only expose one jQuery method.
+  - Add page transitions between full pages.
