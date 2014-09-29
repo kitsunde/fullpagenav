@@ -54,7 +54,7 @@
       }
     });
 
-    this.reflow();
+    this.reflow(true);
   };
 
   FullPageNav.DEFAULTS = {
@@ -168,7 +168,7 @@
     return this.show(this.$items.eq(pos));
   };
 
-  FullPageNav.prototype.reflow = function() {
+  FullPageNav.prototype.reflow = function(instantly) {
     var options = this.options;
     var primaryItemWidth;
     var itemWidth;
@@ -201,7 +201,11 @@
       return animation;
     });
 
-    return $.when.apply(this, animations);
+    var promise = $.when.apply(this, animations);
+    if(instantly){
+      $.each(animations, function(){this.finish()});
+    }
+    return promise;
   };
 
   function Plugin(option, actionOption) {
