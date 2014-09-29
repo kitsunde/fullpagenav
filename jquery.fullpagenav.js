@@ -149,12 +149,21 @@
 
   FullPageNav.prototype.close = function() {
     var $active = $(this.options.selector, this.$element).filter(".active");
+    var that = this;
     if(!$active.length){
       return this;
     }
     $active.removeClass("active");
     this.$element.removeClass("fullpage");
-    this.reflow();
+
+    var collapseEvent = $.Event("collapse.fullpagenav");
+    this.$element.trigger(collapsedEvent);
+
+    var collapsedEvent = $.Event("collapsed.fullpagenav");
+
+    this.reflow().done(function() {
+      $(that).trigger(collapsedEvent);
+    });
     return this;
   };
 
