@@ -15,8 +15,8 @@
 	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,700' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Playfair+Display' rel='stylesheet' type='text/css'>
 	<script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-  <script type="text/javascript" src="jquery.fullpagenav.js"></script>
-  <link href='fullpagenav.css' rel='stylesheet' type='text/css'>
+  <script type="text/javascript" src="../jquery.fullpagenav.js"></script>
+  <link href='../fullpagenav.css' rel='stylesheet' type='text/css'>
   <style>
     html {
       height: 100%;
@@ -301,12 +301,6 @@
 
     
 	</style>
-	<script>
-	  $(document).ready( function() {
-	    $(".page_container").fullpagenav();
-	  });
-		
-	</script>
 </head>
 <body>
   <div class="wrapper">
@@ -316,48 +310,80 @@
         <h2>Create a fully responsive and dynamic full page navigation with one JS call</h2>
         <p class="credit">Created by <a href="http://www.thepetedesign.com">Pete R.</a>, Founder of <a href="http://www.bucketlistly.com" target="_blank">BucketListly</a></p>
         <div class="btns">
-  	      <a class="reload btn" href="https://github.com/peachananr/fullpagenav">Download on Github</a>
+  	      <a class="reload btn js-close">Close</a>
   	    </div>
   	  </div>
-      <ul class="page_container">
-        <li class="nav1" data-link="http://blog.bucketlistly.com/post/62418127132/4-days-traveling-around-the-majestic-myanmar-a">
-          <img src="http://du1frgvkr39c.cloudfront.net/app/public/assets/achievements/13846/large_square/tmp_2F939ea756-a1a0-4575-8f74-2b8553cff7c6_2FDSC05413.jpg">
-          <div class="content">
-            <h1><a href="http://blog.bucketlistly.com/post/62418127132/4-days-traveling-around-the-majestic-myanmar-a">Majestic Myanmar</a></h1>
-          </div>
-        </li>
-        <li class="nav2" data-link="http://www.bucketlistly.com/achievements/travel-to-nepal-26896">
-          <img src="http://du1frgvkr39c.cloudfront.net/app/public/assets/achievements/26896/large_square/tmp_2Fe78fc123-6a07-4219-8cae-83eff0eb0e40_2FDSC07746.jpg">
-          <div class="content">
-            <h1><a href="http://www.bucketlistly.com/achievements/travel-to-nepal-26896">Natural Nepal</a></h1>
-          </div>
-
-        </li>
-        <li class="nav3" data-link="http://blog.bucketlistly.com/post/56874058846/inspiring-indonesia-a-solo-travelers-journal-2">
-          <img src="http://du1frgvkr39c.cloudfront.net/app/public/assets/achievements/16126/large_square/tmp_2Fda233dd4-774f-475c-9bb5-2e2c3da071e4_2FC360_2013-06-15-14-17-03-876.jpg">
-          <div class="content">
-            <h1><a href="http://blog.bucketlistly.com/post/56874058846/inspiring-indonesia-a-solo-travelers-journal-2">Inspiring Indonesia</a></h1>
-          </div>
-
-        </li>
-        <li class="nav4" data-link="http://blog.bucketlistly.com/post/59094956648/incredible-india-a-solo-travelers-journal-3">
-          <img src="http://du1frgvkr39c.cloudfront.net/app/public/assets/achievements/33131/large_square/tmp_2Fd8a246be-0f8c-4361-9ada-eadd2ed27d9e_2FDSC04669.jpg">
-          <div class="content">
-            <h1><a href="http://blog.bucketlistly.com/post/59094956648/incredible-india-a-solo-travelers-journal-3">Incredible India</a></h1>
-          </div>
-
-        </li>
-        <li class="nav5" data-link="http://blog.bucketlistly.com/post/55263089542/curious-cambodia-a-solo-travelers-journal-1">
-          <img src="http://du1frgvkr39c.cloudfront.net/app/public/assets/achievements/13387/large_square/tmp_2F520267b4-1107-4d7f-96e5-abd49595d245_2FC360_2013-05-05-13-32-44-950.jpg">
-          <div class="content">
-            <h1><a href="http://blog.bucketlistly.com/post/55263089542/curious-cambodia-a-solo-travelers-journal-1">Curious Cambodia</a></h1>
-          </div>
-
-        </li>
-      </ul>
+      <div style="position: absolute; height: 100%; width: 100%;">
+        <ul class="page_container fullpagenav">
+          <li class="nav1">
+            <img src="http://du1frgvkr39c.cloudfront.net/app/public/assets/achievements/13846/large_square/tmp_2F939ea756-a1a0-4575-8f74-2b8553cff7c6_2FDSC05413.jpg">
+            <div class="content">
+              <h1><a href="http://blog.bucketlistly.com/post/62418127132/4-days-traveling-around-the-majestic-myanmar-a">Majestic Myanmar</a></h1>
+            </div>
+            <a data-fullpagenav-to=".nav2" style="position: absolute; top:50%; right: 0;">
+              Next
+            </a>
+          </li>
+          <li class="nav2">
+            <a data-fullpagenav-to=".nav1" style="position: absolute; top:50%; left: 0;">
+              Prev
+            </a>
+            <img src="http://du1frgvkr39c.cloudfront.net/app/public/assets/achievements/26896/large_square/tmp_2Fe78fc123-6a07-4219-8cae-83eff0eb0e40_2FDSC07746.jpg">
+            <div class="content">
+              <h1><a href="http://www.bucketlistly.com/achievements/travel-to-nepal-26896">Natural Nepal</a></h1>
+            </div>
+            <a data-fullpagenav-to=".nav3" style="position: absolute; top:50%; right: 0;">
+              Next
+            </a>
+          </li>
+          <li class="nav3">
+            <a data-fullpagenav-to=".nav2" style="position: absolute; top:50%; left: 0;">
+              Prev
+            </a>
+            <img src="http://du1frgvkr39c.cloudfront.net/app/public/assets/achievements/16126/large_square/tmp_2Fda233dd4-774f-475c-9bb5-2e2c3da071e4_2FC360_2013-06-15-14-17-03-876.jpg">
+            <div class="content">
+              <h1><a href="http://blog.bucketlistly.com/post/56874058846/inspiring-indonesia-a-solo-travelers-journal-2">Inspiring Indonesia</a></h1>
+            </div>
+            <a data-fullpagenav-to=".nav4" style="position: absolute; top:50%; right: 0;">
+              Next
+            </a>
+          </li>
+          <li class="nav4">
+            <a data-fullpagenav-to=".nav3" style="position: absolute; top:50%; left: 0;">
+              Prev
+            </a>
+            <img src="http://du1frgvkr39c.cloudfront.net/app/public/assets/achievements/33131/large_square/tmp_2Fd8a246be-0f8c-4361-9ada-eadd2ed27d9e_2FDSC04669.jpg">
+            <div class="content">
+              <h1><a href="http://blog.bucketlistly.com/post/59094956648/incredible-india-a-solo-travelers-journal-3">Incredible India</a></h1>
+            </div>
+            <a data-fullpagenav-to=".nav5" style="position: absolute; top:50%; right: 0;">
+              Next
+            </a>
+          </li>
+          <li class="nav5" data-link="http://blog.bucketlistly.com/post/55263089542/curious-cambodia-a-solo-travelers-journal-1">
+            <a data-fullpagenav-to=".nav4" style="position: absolute; top:50%; left: 0;">
+              Prev
+            </a>
+            <img src="http://du1frgvkr39c.cloudfront.net/app/public/assets/achievements/13387/large_square/tmp_2F520267b4-1107-4d7f-96e5-abd49595d245_2FC360_2013-05-05-13-32-44-950.jpg">
+            <div class="content">
+              <h1><a href="http://blog.bucketlistly.com/post/55263089542/curious-cambodia-a-solo-travelers-journal-1">Curious Cambodia</a></h1>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
     <a class="back" href="http://www.thepetedesign.com/#design">Back to The Pete Design</a>
     <a href="https://github.com/peachananr/fullpagenav"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 15;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
   </div>
+  <script>
+    $(".page_container").fullpagenav();
+    $(".js-close").click(function(){
+      $(".page_container").fullpagenav("close");
+    });
+    $("[data-fullpagenav-to]").click(function() {
+      var $target = $($(this).data("fullpagenav-to"));
+      $(".page_container").fullpagenav("show", $target);
+    });
+  </script>
 </body>
 </html>

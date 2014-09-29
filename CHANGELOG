@@ -1,10 +1,12 @@
-1.1
+v2 in Development
   - Change click behavior to expand the slide.
   - Fixed mouse hover to transition from one state to the next fluidly.
-  - Added fullpagenav("page", n) to set the expanded page.
+  - Added fullpagenav(n) to set the expanded page.
   - Added fullpagenav("prev") to go backwards through the pages.
   - Added fullpagenav("next") to forward through the pages.
   - Removed the data-link attribute.
   - Added events expanding.fullpagenav, shrinking.fullpagenav,
     expanded.fullpagenav
   - Added classes for state expanded, expanding.
+  - Cleaned up all the code and organized it similarly to bootstrap plugins.
+  - Only expose one jQuery method.

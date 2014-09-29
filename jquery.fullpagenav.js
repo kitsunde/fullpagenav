@@ -14,169 +14,212 @@
 (function($) {
   "use strict";
 
-  var instances = {};
+  function getTransitionEndEvent() {
+    var el = document.createElement('fullpagenav');
 
-  var defaults = {
-    columns: 5,
+    var transEndEventNames = {
+      WebkitTransition: 'webkitTransitionEnd',
+      MozTransition: 'transitionend',
+      OTransition: 'oTransitionEnd otransitionend',
+      transition: 'transitionend'
+    };
+
+    for(var name in transEndEventNames){
+      if(el.style[name] !== undefined){
+        return transEndEventNames[name];
+      }
+    }
+  }
+
+  var FullPageNav = function(element, options) {
+    this.$element = $(element);
+    this.options = options;
+
+    this.$items = this.$element.find(this.options.selector);
+    this.$items.wrapInner("<div class='fpn_wrap'>");
+
+    this.$element.on("mouseenter",
+      this.options.selector,
+      this.highlight.bind(this));
+
+    this.$element.on("mouseleave",
+      this.options.selector,
+      this.unhighlight.bind(this));
+
+    var that = this;
+    this.$element.on("click", this.options.selector, function(e) {
+      e.preventDefault();
+      if(!that.$items.hasClass("active")){
+        that.show($(this));
+      }
+    });
+
+    this.reflow();
+  };
+
+  FullPageNav.DEFAULTS = {
     selector: "> li",
     hoverSize: 30,
     animateDuration: 500,
     easing: "linear",
-    animateFrom: "left",
-    clickable: true,
-    afterClicked: null
+    animateFrom: "left"
   };
 
-  var dimensions;
+  FullPageNav.prototype.highlight = function(e) {
+    if(this.$items.hasClass("active")){
+      return;
+    }
+    $(e.currentTarget).addClass("highlight");
+    this.reflow();
+  };
 
-  $.fn.recalculate = function(settings) {
-    var el = $(this);
-    var totalWidth = 0;
-    var unexpandedWidth;
-    var $slides = el.find(settings.selector);
-    var containerWidth = $(this).parent().width();
-    var expandedWidth = $slides.hasClass("fpn_clicked") ? 100 : settings.hoverSize;
+  FullPageNav.prototype.unhighlight = function(e) {
+    if(this.$items.hasClass("active")){
+      return;
+    }
+    $(e.currentTarget).removeClass("highlight");
+    this.reflow();
+  };
 
-    if(expandedWidth !== 100){
-      if(el.hasClass("expanded") || el.hasClass("expanding")){
-        el.trigger($.Event("shrinking.fullpagenav", {relatedTarget: this}));
-      }
-      el.removeClass("expanded expanding");
+  FullPageNav.prototype.getItemIndex = function(item) {
+    this.$items = item.parent().children(this.options.selector);
+    return this.$items.index(item || this.$active);
+  };
+
+  FullPageNav.prototype.next = function() {
+    return this.show("next");
+  };
+
+  FullPageNav.prototype.prev = function() {
+    return this.show("prev");
+  };
+
+  FullPageNav.prototype.show = function($next) {
+    var $active = $(this.options.selector, this.$element).filter(".active");
+    if($active.length){
+      var direction = this.$items.index($active) < this.$items.index($next) ?
+        'left' : 'right';
+    }
+    var that = this;
+
+    if(!$next.length){
+      return this;
     }
 
-    if(expandedWidth === 100){
-      el.addClass("expanding");
+    if($next.hasClass("active")){
+      return this;
     }
 
-    if(expandedWidth === 100){
-      unexpandedWidth = 0;
-    }else if($slides.hasClass("active")){
-      unexpandedWidth = (100 - settings.hoverSize) / (dimensions.length - 1);
-    }else{
-      unexpandedWidth = 100 / dimensions.length;
-    }
+    this.$element.addClass("fullpage");
 
-    $slides.each(function() {
-      var targetWidth = 0;
-      if($(this).hasClass("active")){
-        targetWidth = expandedWidth;
-        if(targetWidth === 100){
-          el.trigger($.Event("expanding.fullpagenav", {relatedTarget: this}));
-        }
-      }else{
-        targetWidth = unexpandedWidth;
-      }
-      $(this).stop().animate({
-        left: totalWidth + '%',
-        width: targetWidth + "%"
-      }, settings.animateDuration, settings.easing, function(){
-        if(targetWidth === 100){
-          el.trigger($.Event("expanded.fullpagenav", {relatedTarget: this}));
-          el.addClass("expanded");
-        }
-      })
-        .find(".fn_wrap")
-        .css({
-          width: parseInt(containerWidth * (100 / targetWidth))
-        });
+    var relatedTarget = $next[0];
 
-      totalWidth += targetWidth;
+    var showEvent = $.Event('show.fullpagenav', {
+      relatedTarget: relatedTarget
     });
+    this.$element.trigger(showEvent);
+
+    var shownEvent = $.Event('shown.fullpagenav', {
+      relatedTarget: relatedTarget
+    });
+
+    $next.addClass("active");
+    $active.removeClass("active");
+
+    if($active.length){
+      $active.add($next).addClass(direction);
+
+      $active.one(getTransitionEndEvent(), function() {
+        $active.add($next).removeClass("animate left right");
+        $active[0].offsetWidth;
+        that.$element.trigger(shownEvent);
+      });
+
+      $active.add($next).addClass("animate");
+    }else{
+      this.reflow().done(function() {
+        that.$element.trigger(shownEvent);
+        that.$items.attr("style", null);
+      });
+    }
+    return this;
   };
 
-  function determineDirection($el, pos) {
-    var w = $el.width(),
-      middle = $el.offset().left + w / 2;
-    return (pos.pageX > middle ? 0 : 1);
+  FullPageNav.prototype.close = function() {
+    var $active = $(this.options.selector, this.$element).filter(".active");
+    if(!$active.length){
+      return this;
+    }
+    $active.removeClass("active");
+    this.$element.removeClass("fullpage");
+    this.reflow();
+    return this;
+  };
+
+  FullPageNav.prototype.to = function(pos) {
+    this.$active = this.$element.find('.active');
+
+    if(pos > (this.$items.length - 1) || pos < 0){
+      return;
+    }
+
+    return this.show(this.$items.eq(pos));
+  };
+
+  FullPageNav.prototype.reflow = function() {
+    var options = this.options;
+    var primaryItemWidth;
+    var itemWidth;
+    var offset = 0;
+
+    if(this.$items.hasClass("active")){
+      itemWidth = 0;
+      primaryItemWidth = 100;
+    }else if(this.$items.hasClass("highlight")){
+      primaryItemWidth = this.options.hoverSize;
+      itemWidth = (100 - primaryItemWidth) / (this.$items.length - 1);
+    }else{
+      itemWidth = 100 / this.$items.length;
+    }
+
+    var animations = this.$items.map(function() {
+      var targetWidth = 0;
+      var $item = $(this);
+      if($item.hasClass("active") || $item.hasClass("highlight")){
+        targetWidth = primaryItemWidth;
+      }else{
+        targetWidth = itemWidth;
+      }
+
+      var animation = $item.stop().animate({
+        left: offset + "%",
+        width: targetWidth + "%"
+      }, options.animateDuration, options.easing);
+      offset += targetWidth;
+      return animation;
+    });
+
+    return $.when.apply(this, animations);
+  };
+
+  function Plugin(option, actionOption) {
+    return this.each(function() {
+      var $this = $(this);
+      var data = $this.data('fullpagenav');
+      var options = $.extend({}, FullPageNav.DEFAULTS, $this.data(),
+          typeof option == 'object' && option);
+
+      var action = typeof option === 'string' ? option : 'reflow';
+
+      if(!data) $this.data('fullpagenav',
+        (data = new FullPageNav(this, options)));
+      if(typeof option == 'number'){
+        data.to(option);
+      }else{
+        data[action](actionOption);
+      }
+    });
   }
 
-  $.fn.fullpagenav = function(options, page) {
-    var el = $(this);
-    if(instances[el]){
-      settings = instances[el].settings;
-    }else{
-      instances[el] = {}
-    }
-    if(options === "next"){
-      el.find(settings.selector)
-        .filter(".active")
-        .removeClass("active fpn_clicked")
-        .next()
-        .addClass("active fpn_clicked");
-      el.recalculate(settings);
-      return el;
-    }
-    if(options === "prev"){
-      el.find(settings.selector)
-        .filter(".active")
-        .removeClass("active fpn_clicked")
-        .prev()
-        .addClass("active fpn_clicked");
-      el.recalculate(settings);
-      return el;
-    }
-    if(options === "page"){
-      el.find(settings.selector)
-        .filter(".active")
-        .removeClass("active fpn_clicked")
-        .end()
-        .eq(page - 1)
-        .addClass("active fpn_clicked");
-      el.recalculate(settings);
-      return el;
-    }
-
-    var settings = $.extend({}, defaults, options);
-    instances[el].settings = settings;
-    var $slides = $(settings.selector, this);
-
-    dimensions = $.map($slides, function(item, index) {
-      var width = 100 / $slides.length;
-      return {left: width * index, width: width};
-    });
-
-    el.addClass("fullpagenav");
-    $slides.addClass("fpn_li");
-    el.parent().addClass("fpn_body");
-
-    el.recalculate(settings);
-    $slides.finish();
-
-    $slides
-      .wrapInner("<div class='fpn_wrap'></div>")
-      .click(function() {
-        if(!$(this).hasClass("fpn_clicked")){
-          $(this).addClass("fpn_clicked");
-          settings.hoverSize = 100;
-          el.recalculate(settings);
-          return false;
-        }else{
-          $(this).removeClass("fpn_clicked");
-          settings.hoverSize = 30;
-          el.recalculate(settings);
-        }
-      }).mouseenter(function(e) {
-        if($(this).hasClass("fpn_clicked")){
-          return false;
-        }
-        $(this).addClass("active");
-        var floatDirection;
-
-        el.recalculate(settings);
-        if(settings.animateFrom === "auto"){
-          floatDirection = determineDirection($(this), e) === 1 ? "left" : "right";
-        }else{
-          floatDirection = settings.animateFrom;
-        }
-        $(this).find(".fpn_wrap").css({"float": floatDirection});
-      }).mouseleave(function() {
-        if($(this).hasClass("fpn_clicked")){
-          return false;
-        }
-        $(this).removeClass("active");
-        el.recalculate(settings);
-      });
-    return el;
-  };
+  $.fn.fullpagenav = Plugin;
 })(window.jQuery);
-
