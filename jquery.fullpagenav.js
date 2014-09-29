@@ -15,13 +15,13 @@
   "use strict";
 
   function getTransitionEndEvent() {
-    var el = document.createElement('fullpagenav');
+    var el = document.createElement("fullpagenav");
 
     var transEndEventNames = {
-      WebkitTransition: 'webkitTransitionEnd',
-      MozTransition: 'transitionend',
-      OTransition: 'oTransitionEnd otransitionend',
-      transition: 'transitionend'
+      WebkitTransition: "webkitTransitionEnd",
+      MozTransition: "transitionend",
+      OTransition: "oTransitionEnd otransitionend",
+      transition: "transitionend"
     };
 
     for(var name in transEndEventNames){
@@ -98,7 +98,7 @@
     var $active = $(this.options.selector, this.$element).filter(".active");
     if($active.length){
       var direction = this.$items.index($active) < this.$items.index($next) ?
-        'left' : 'right';
+        "left" : "right";
     }
     var that = this;
 
@@ -114,12 +114,12 @@
 
     var relatedTarget = $next[0];
 
-    var showEvent = $.Event('show.fullpagenav', {
+    var showEvent = $.Event("show.fullpagenav", {
       relatedTarget: relatedTarget
     });
     this.$element.trigger(showEvent);
 
-    var shownEvent = $.Event('shown.fullpagenav', {
+    var shownEvent = $.Event("shown.fullpagenav", {
       relatedTarget: relatedTarget
     });
 
@@ -131,7 +131,9 @@
 
       $active.one(getTransitionEndEvent(), function() {
         $active.add($next).removeClass("animate left right");
+        /*eslint-disable no-unused-expressions*/
         $active[0].offsetWidth;
+        /*eslint-enable no-unused-expressions*/
         that.$element.trigger(shownEvent);
       });
 
@@ -157,10 +159,10 @@
   };
 
   FullPageNav.prototype.to = function(pos) {
-    this.$active = this.$element.find('.active');
+    this.$active = this.$element.find(".active");
 
     if(pos > (this.$items.length - 1) || pos < 0){
-      return;
+      return this;
     }
 
     return this.show(this.$items.eq(pos));
@@ -205,15 +207,16 @@
   function Plugin(option, actionOption) {
     return this.each(function() {
       var $this = $(this);
-      var data = $this.data('fullpagenav');
+      var data = $this.data("fullpagenav");
       var options = $.extend({}, FullPageNav.DEFAULTS, $this.data(),
-          typeof option == 'object' && option);
+          typeof option === "object" && option);
 
-      var action = typeof option === 'string' ? option : 'reflow';
+      var action = typeof option === "string" ? option : "reflow";
 
-      if(!data) $this.data('fullpagenav',
-        (data = new FullPageNav(this, options)));
-      if(typeof option == 'number'){
+      if(!data) {
+        $this.data("fullpagenav", (data = new FullPageNav(this, options)));
+      }
+      if(typeof option === "number"){
         data.to(option);
       }else{
         data[action](actionOption);
