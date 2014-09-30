@@ -10,4 +10,6 @@ v2 in Development
   - Added classes for state expanded, expanding.
   - Cleaned up all the code and organized it similarly to bootstrap plugins.
   - Only expose one jQuery method.
-  - Add page transitions between full pages.
+  - Added page transitions between full pages.
+  - Added html attribute data-fullpagenav-to for navigating between views.
+  - Added html attribute data-fullpagenav-direction for specifying nav direction.

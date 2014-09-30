@@ -52,6 +52,12 @@
       if(!that.$items.hasClass("active")){
         that.show($(this));
       }
+    }).on("click", "[data-fullpagenav-to]", function(e) {
+      e.preventDefault();
+      that.show(
+        $($(this).data("fullpagenav-to")),
+        $(this).data("fullpagenav-direction")
+      );
     });
 
     this.reflow(true);
@@ -94,10 +100,10 @@
     return this.show("prev");
   };
 
-  FullPageNav.prototype.show = function($next) {
+  FullPageNav.prototype.show = function($next, direction) {
     var $active = $(this.options.selector, this.$element).filter(".active");
-    if($active.length){
-      var direction = this.$items.index($active) < this.$items.index($next) ?
+    if($active.length && !direction){
+      direction = this.$items.index($active) < this.$items.index($next) ?
         "left" : "right";
     }
     var that = this;
