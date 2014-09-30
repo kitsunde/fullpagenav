@@ -52,12 +52,6 @@
       if(!that.$items.hasClass("active")){
         that.show($(this));
       }
-    }).on("click", "[data-fullpagenav-to]", function(e) {
-      e.preventDefault();
-      that.show(
-        $($(this).data("fullpagenav-to")),
-        $(this).data("fullpagenav-direction")
-      );
     });
 
     this.reflow(true);
@@ -241,6 +235,16 @@
       }
     });
   }
+
+  $(document).on('click', '[data-fullpagenav-to]', function(e) {
+    var $this = $(this);
+    var $target = $($this.attr('data-target'));
+    if(!$target.hasClass('fullpagenav')) return;
+
+    Plugin.call($target, ["show", $($this.data('fullpagenav-to'))]);
+
+    e.preventDefault();
+  });
 
   $.fn.fullpagenav = Plugin;
 })(window.jQuery);
