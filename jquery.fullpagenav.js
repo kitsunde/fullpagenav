@@ -127,17 +127,16 @@
     $active.removeClass("active");
 
     if($active.length){
-      $active.add($next).addClass(direction);
-
-      $active.one(getTransitionEndEvent(), function() {
+      $active.add($next).addClass(direction + " animate");
+      var handleTransitionEvent = function(e){
+        if(e.target !== $next[0]){
+          return;
+        }
+        $next.off(getTransitionEndEvent(), handleTransitionEvent);
         $active.add($next).removeClass("animate left right");
-        /*eslint-disable no-unused-expressions*/
-        $active[0].offsetWidth;
-        /*eslint-enable no-unused-expressions*/
         that.$element.trigger(shownEvent);
-      });
-
-      $active.add($next).addClass("animate");
+      };
+      $next.on(getTransitionEndEvent(), handleTransitionEvent);
     }else{
       this.reflow().done(function() {
         that.$element.trigger(shownEvent);
