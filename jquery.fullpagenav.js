@@ -238,10 +238,10 @@
 
   $(document).on('click', '[data-fullpagenav-to]', function(e) {
     var $this = $(this);
-    var $target = $($this.attr('data-target'));
+    var $target = $($this.data('fullpagenav-target'));
     if(!$target.hasClass('fullpagenav')) return;
 
-    Plugin.call($target, ["show", $($this.data('fullpagenav-to'))]);
+    Plugin.apply($target, ["show", $($this.data('fullpagenav-to'))]);
 
     e.preventDefault();
   });
