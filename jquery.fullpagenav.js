@@ -32,11 +32,34 @@
   }
 
   var FullPageNav = function(element, options) {
+    var that = this;
     this.$element = $(element);
     this.options = options;
 
     this.$items = this.$element.find(this.options.selector);
     this.$items.wrapInner("<div class='fpn_wrap'>");
+
+    // @todo There's a CSS attribute that allows mouse events to flow through
+    // which isn't widely supported on IE. On mot other browsers this
+    // shouldn't be necessary.
+    // We should probably introduce some option like
+    // catchMoseEvents: 'css-unsupported' (default) / 'always' / false
+    $("body").on("mousemove", function(e) {
+      var inFocus = that.$items.filter(function(index, item) {
+        var bounds = item.getBoundingClientRect();
+
+        if(bounds.left > e.clientX || bounds.right < e.clientX ||
+          bounds.top > e.clientY || bounds.bottom < e.clientY){
+          return;
+        }
+        return true;
+      });
+
+      if(!inFocus.is(".highlight")){
+        that.$items.filter(".highlight").trigger("mouseleave");
+        inFocus.trigger("mouseenter");
+      }
+    });
 
     this.$element.on("mouseenter",
       this.options.selector,
@@ -46,7 +69,7 @@
       this.options.selector,
       this.unhighlight.bind(this));
 
-    var that = this;
+
     this.$element.on("click", this.options.selector, function(e) {
       e.preventDefault();
       if(!that.$items.hasClass("active")){
@@ -69,12 +92,14 @@
     if(this.$items.hasClass("active")){
       return;
     }
+    this.$items.filter(".highlight").removeClass("highlight");
     $(e.currentTarget).addClass("highlight");
+
     this.reflow();
   };
 
   FullPageNav.prototype.unhighlight = function(e) {
-    if(this.$items.hasClass("active")){
+    if(this.$items.hasClass("active") || !this.$items.hasClass("highlight")){
       return;
     }
     $(e.currentTarget).removeClass("highlight");

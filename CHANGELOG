@@ -13,3 +13,4 @@ v2 in Development
   - Added page transitions between full pages.
   - Added html attribute data-fullpagenav-to for navigating between views.
   - Added html attribute data-fullpagenav-direction for specifying nav direction.
+  - Allow highlighting to be caught through overlays.
