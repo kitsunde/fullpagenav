@@ -206,24 +206,36 @@
     var primaryItemWidth;
     var itemWidth;
     var offset = 0;
+    var that = this;
 
     if(this.$items.hasClass("active")){
       itemWidth = 0;
       primaryItemWidth = 100;
-    }else if(this.$items.hasClass("highlight")){
-      primaryItemWidth = this.options.hoverSize;
-      itemWidth = (100 - primaryItemWidth) / (this.$items.length - 1);
     }else{
-      itemWidth = 100 / this.$items.length;
+      var remainingWidth = 100;
+      var normal = 0;
+
+      this.$items.each(function() {
+        if($(this).hasClass("highlight")){
+          remainingWidth -= that.options.hoverSize;
+        }else if($(this).data('fullpagenav-width')){
+          remainingWidth -= $(this).data('fullpagenav-width');
+        }else{
+          normal++;
+        }
+      });
+      itemWidth = remainingWidth / normal;
     }
 
     var animations = this.$items.map(function() {
       var targetWidth = 0;
       var $item = $(this);
-      if($item.hasClass("active") || $item.hasClass("highlight")){
-        targetWidth = primaryItemWidth;
+      if($item.hasClass("active")){
+        targetWidth = 100;
+      }else if($item.hasClass("highlight")){
+        targetWidth = that.options.hoverSize;
       }else{
-        targetWidth = itemWidth;
+        targetWidth = $item.data("fullpagenav-width") || itemWidth;
       }
 
       var animation = $item.stop().animate({

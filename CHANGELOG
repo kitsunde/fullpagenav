@@ -14,3 +14,4 @@ v2 in Development
   - Added html attribute data-fullpagenav-to for navigating between views.
   - Added html attribute data-fullpagenav-direction for specifying nav direction.
   - Allow highlighting to be caught through overlays.
+  - Added data attribute data-fullpagenav-width for individual column widths.
