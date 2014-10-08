@@ -177,11 +177,16 @@
     if(!$active.length){
       return this;
     }
-    $active.removeClass("active");
+    $active
+      .removeClass("active")
+      .css({width: "100%", left: "0%"})
+      .prevAll("li").css("left", "0%").end()
+      .nextAll("li").css("left", "100%");
+
     this.$element.removeClass("fullpage");
 
     var collapseEvent = $.Event("collapse.fullpagenav");
-    this.$element.trigger(collapsedEvent);
+    this.$element.trigger(collapseEvent);
 
     var collapsedEvent = $.Event("collapsed.fullpagenav");
 
