@@ -14,23 +14,6 @@
 (function($) {
   "use strict";
 
-  function getTransitionEndEvent() {
-    var el = document.createElement("fullpagenav");
-
-    var transEndEventNames = {
-      WebkitTransition: "webkitTransitionEnd",
-      MozTransition: "transitionend",
-      OTransition: "oTransitionEnd otransitionend",
-      transition: "transitionend"
-    };
-
-    for(var name in transEndEventNames){
-      if(el.style[name] !== undefined){
-        return transEndEventNames[name];
-      }
-    }
-  }
-
   var FullPageNav = function(element, options) {
     var that = this;
     this.$element = $(element);
@@ -152,16 +135,15 @@
     $active.removeClass("active");
 
     if($active.length){
-      $active.add($next).addClass(direction + " animate");
-      var handleTransitionEvent = function(e){
-        if(e.target !== $next[0]){
-          return;
-        }
-        $next.off(getTransitionEndEvent(), handleTransitionEvent);
+      $next.css("left", direction === 'left' ? "100%" : "-100%");
+      $active
+        .add($next)
+        .addClass(direction + " animate")
+        .animate({left: (direction === 'left'? '-' : '+') + '=100%'}, 5000, that.options.easing);
+      $next.promise().done(function() {
         $active.add($next).removeClass("animate left right");
         that.$element.trigger(shownEvent);
-      };
-      $next.on(getTransitionEndEvent(), handleTransitionEvent);
+      });
     }else{
       this.reflow().done(function() {
         that.$element.trigger(shownEvent);
