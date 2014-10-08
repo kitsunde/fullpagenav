@@ -207,11 +207,9 @@
     var itemWidth;
     var offset = 0;
     var that = this;
+    var expanding = this.$items.hasClass("active");
 
-    if(this.$items.hasClass("active")){
-      itemWidth = 0;
-      primaryItemWidth = 100;
-    }else{
+    if(!expanding){
       var remainingWidth = 100;
       var normal = 0;
 
@@ -230,12 +228,14 @@
     var animations = this.$items.map(function() {
       var targetWidth = 0;
       var $item = $(this);
-      if($item.hasClass("active")){
-        targetWidth = 100;
-      }else if($item.hasClass("highlight")){
-        targetWidth = that.options.hoverSize;
+      if(expanding){
+        targetWidth = $item.hasClass("active") ? 100 : 0;
       }else{
-        targetWidth = $item.data("fullpagenav-width") || itemWidth;
+        if($item.hasClass("highlight")){
+          targetWidth = that.options.hoverSize;
+        }else{
+          targetWidth = $item.data("fullpagenav-width") || itemWidth;
+        }
       }
 
       var animation = $item.stop().animate({
