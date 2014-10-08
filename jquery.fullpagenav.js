@@ -139,7 +139,9 @@
       $active
         .add($next)
         .addClass(direction + " animate")
-        .animate({left: (direction === 'left'? '-' : '+') + '=100%'}, 5000, that.options.easing);
+        .animate({left: (direction === 'left'? '-' : '+') + '=100%'},
+        that.options.animateDuration,
+        that.options.easing);
       $next.promise().done(function() {
         $active.add($next).removeClass("animate left right");
         that.$element.trigger(shownEvent);
