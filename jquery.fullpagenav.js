@@ -102,8 +102,11 @@
     return this.show("prev");
   };
 
-  FullPageNav.prototype.show = function($next, direction) {
+  FullPageNav.prototype.show = function(next) {
+    var direction = next.direction;
+    var $next = next.show || next;
     var $active = $(this.options.selector, this.$element).filter(".active");
+
     if($active.length && !direction){
       direction = this.$items.index($active) < this.$items.index($next) ?
         "left" : "right";
@@ -267,7 +270,11 @@
     var $target = $($this.data('fullpagenav-target'));
     if(!$target.hasClass('fullpagenav')) return;
 
-    Plugin.apply($target, ["show", $($this.data('fullpagenav-to'))]);
+    Plugin.apply($target, ["show", {
+      show: $($this.data('fullpagenav-to')),
+      direction: $this.data('fullpagenav-direction')
+    }
+    ]);
 
     e.preventDefault();
   });
