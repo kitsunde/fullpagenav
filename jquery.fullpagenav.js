@@ -104,7 +104,7 @@
 
   FullPageNav.prototype.show = function(next) {
     var direction = next.direction;
-    var $next = next.show || next;
+    var $next = next.direction ? next.show : next;
     var $active = $(this.options.selector, this.$element).filter(".active");
 
     if($active.length && !direction){
