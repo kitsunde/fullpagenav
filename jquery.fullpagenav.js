@@ -78,14 +78,16 @@
     this.$items.filter(".highlight").removeClass("highlight");
     $(e.currentTarget).addClass("highlight");
 
-    this.reflow();
+    this.reflow().done(function(){
+      this.$items.filter(".highlight").addClass("highlighted");
+    }.bind(this));
   };
 
   FullPageNav.prototype.unhighlight = function(e) {
     if(this.$items.hasClass("active") || !this.$items.hasClass("highlight")){
       return;
     }
-    $(e.currentTarget).removeClass("highlight");
+    $(e.currentTarget).removeClass("highlight highlighted");
     this.reflow();
   };
 
