@@ -76,13 +76,13 @@
       return;
     }
     this.$items.filter(".highlight").removeClass("highlight");
-    $(e.currentTarget).addClass("highlight");
+    var $highlight = $(e.currentTarget).addClass("highlight");
 
     this.reflow().done(function(){
-      if(this.$items.hasClass("highlight")){
-        $(this).addClass("highlighted");
+      if($highlight.hasClass("highlight")){
+        $highlight.addClass("highlighted");
       }
-    }.bind(this));
+    });
   };
 
   FullPageNav.prototype.unhighlight = function(e) {
