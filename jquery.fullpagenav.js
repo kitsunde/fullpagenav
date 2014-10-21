@@ -79,7 +79,9 @@
     $(e.currentTarget).addClass("highlight");
 
     this.reflow().done(function(){
-      this.$items.filter(".highlight").addClass("highlighted");
+      if(this.$items.hasClass("highlight")){
+        $(this).addClass("highlighted");
+      }
     }.bind(this));
   };
 
