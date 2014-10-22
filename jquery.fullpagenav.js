@@ -182,7 +182,7 @@
     var collapsedEvent = $.Event("collapsed.fullpagenav");
 
     this.reflow().done(function() {
-      $(that).trigger(collapsedEvent);
+      that.$element.trigger(collapsedEvent);
     });
     return this;
   };
