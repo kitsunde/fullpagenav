@@ -72,6 +72,9 @@
   };
 
   FullPageNav.prototype.highlight = function(e) {
+    if($(e.currentTarget).hasClass("highlight")){
+      return;
+    }
     if(this.$items.hasClass("active")){
       return;
     }
