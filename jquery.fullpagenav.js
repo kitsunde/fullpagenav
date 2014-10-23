@@ -78,12 +78,12 @@
     this.$items.filter(".highlight").removeClass("highlight");
     var $highlight = $(e.currentTarget).addClass("highlight");
     var highlightEvent = $.Event("highlight.fullpagenav", {
-      relatedTarget: $(e.currentTarget);
+      relatedTarget: $(e.currentTarget)
     });
     $(e.currentTarget).trigger(highlightEvent);
 
     var highlightedEvent = $.Event("highlighted.fullpagenav", {
-      relatedTarget: $(e.currentTarget);
+      relatedTarget: $(e.currentTarget)
     });
 
     this.reflow().done(function(){
