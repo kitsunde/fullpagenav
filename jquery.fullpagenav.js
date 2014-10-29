@@ -22,6 +22,20 @@
     this.$items = this.$element.find(this.options.selector);
     this.$items.wrapInner("<div class='fpn_wrap'>");
 
+    this.$element.on("click", this.options.selector, function(e) {
+      e.preventDefault();
+      if(!that.$items.hasClass("active")){
+        that.show($(this));
+      }
+    });
+
+    this.reflow(true);
+
+    // If it's a touch device we don't need to handle mousemove events.
+    if(Modernizr && Modernizr.touch){
+      return
+    }
+
     // @todo There's a CSS attribute that allows mouse events to flow through
     // which isn't widely supported on IE. On mot other browsers this
     // shouldn't be necessary.
@@ -51,16 +65,6 @@
     this.$element.on("mouseleave",
       this.options.selector,
       this.unhighlight.bind(this));
-
-
-    this.$element.on("click", this.options.selector, function(e) {
-      e.preventDefault();
-      if(!that.$items.hasClass("active")){
-        that.show($(this));
-      }
-    });
-
-    this.reflow(true);
   };
 
   FullPageNav.DEFAULTS = {
